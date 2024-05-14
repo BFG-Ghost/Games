@@ -1,17 +1,14 @@
 import json
 import redis
 import requests
-from config import keys
 from datetime import datetime
-
-
-class ConvertionException(Exception):
-    pass
 
 
 class Converter:
     @staticmethod
     def convert(quote: str, base: str, amount: float):
+        if quote == base:
+            return amount
         red = MyRedis()
         data = red.get_rate(quote, base)
         if data is not None and Converter.actual(data[1]):
